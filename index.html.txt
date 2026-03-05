@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ESP32 Health Monitoring</title>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef2f7;
+text-align:center;
+}
+
+h1{
+color:#333;
+}
+
+.container{
+display:grid;
+grid-template-columns:repeat(3,200px);
+gap:20px;
+justify-content:center;
+margin-top:40px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 5px 10px rgba(0,0,0,0.2);
+}
+
+.value{
+font-size:28px;
+color:#0077ff;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Health Monitoring Dashboard</h1>
+
+<div class="container">
+
+<div class="card">
+<h3>Blood Pressure</h3>
+<div class="value" id="bp">--</div>
+</div>
+
+<div class="card">
+<h3>Pulse</h3>
+<div class="value" id="pulse">--</div>
+</div>
+
+<div class="card">
+<h3>Oxygen (SpO₂)</h3>
+<div class="value" id="oxygen">--</div>
+</div>
+
+<div class="card">
+<h3>ECG</h3>
+<div class="value" id="ecg">--</div>
+</div>
+
+<div class="card">
+<h3>Temperature</h3>
+<div class="value" id="temp">--</div>
+</div>
+
+<div class="card">
+<h3>Heart Rate</h3>
+<div class="value" id="hr">--</div>
+</div>
+
+</div>
+
+<script>
+
+var firebaseConfig = {
+apiKey: "AIzaSyAkMIvf6mCqAomv5bvaguJp7gCiwCxK76g",
+databaseURL: "https://heath-care-monitoring-default-rtdb.asia-southeast1.firebasedatabase.app"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+var db = firebase.database().ref("HealthData");
+
+db.on("value", function(snapshot){
+
+var data = snapshot.val();
+
+document.getElementById("bp").innerHTML = data.bloodPressure;
+document.getElementById("pulse").innerHTML = data.pulse;
+document.getElementById("oxygen").innerHTML = data.oxygen + " %";
+document.getElementById("ecg").innerHTML = data.ecg;
+document.getElementById("temp").innerHTML = data.temperature + " °C";
+document.getElementById("hr").innerHTML = data.heartRate + " BPM";
+
+});
+
+</script>
+
+</body>
+</html>
